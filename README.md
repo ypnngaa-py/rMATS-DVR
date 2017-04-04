@@ -1,11 +1,11 @@
 # rMATS-DVR: rMATS discovery of Differential Variants in RNA
 
-##Introduction
+## Introduction
 
 rMATS-DVR is a convenient and user-friendly program to streamline the discovery of DVRs (Differential Variants in RNA) between two RNA-seq sample groups with replicates. rMATS-DVR combines a stringent GATK-based pipeline for calling SNVs including SNPs and RNA editing events in RNA-seq reads, with our rigorous rMATS statistical model for identifying differential isoform ratios using RNA-seq sequence count data with replicates.
 
 
-##Requirements
+## Requirements
 
 1. Install Python 2.6.x or Python 2.7.x and corresponding versions of NumPy and SciPy.
 
@@ -22,7 +22,7 @@ rMATS-DVR is a convenient and user-friendly program to streamline the discovery 
  Note: We have only tested rMATS-DVR in the linux platform.
 
 
-##Installation:
+## Installation:
 
 1. Create soft links of Picard and GATK into rMATS-DVR folder.<br>
  - cd rMATS-DVR <br>
@@ -30,7 +30,7 @@ rMATS-DVR is a convenient and user-friendly program to streamline the discovery 
  - ln -s /path/to/GATK/GenomeAnalysisTK.jar ./ <br>
 2. Then the source code can be directly called from Python. <br>
 
-##Required and optional external files:
+## Required and optional external files:
 
 All the external files based on human hg19 genome can be downloaded from http://www.mimg.ucla.edu/faculty/xing/public_data/rMATS-DVR/hg19_resource.tar.gz.
 
@@ -49,16 +49,16 @@ Alternatively, users can also prepare the external files under the following ins
 
 5) Gene annotation (optional): the gene annotation is in the GenePred (extended) format (see https://genome.ucsc.edu/FAQ/FAQformat.html for detail). We recommend users to download it from UCSC (http://hgdownload.soe.ucsc.edu/downloads.html). For example, one can download the hg19 RefSeq gene from http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/refGene.txt.gz.
 
-##Run rMATS-DVR in one step.
+## Run rMATS-DVR in one step.
 
-###Usage
+### Usage
 In the one step mode, rMATS-DVR will first calibrate the bam files one by one and then calculate the Differential Variants of RNA using all samples. Mapping with STAR is highly recommended.
 
 ```bash
 python rMATS-DVR.py --sample1 S1_rep_1.bam[,S1_rep_2.bam][,...,S1_rep_n.bam] --sample2 S2_rep_1.bam[,S2_rep_2.bam][,...,S2_rep_n.bam] --label S1,S2 --genome hg19.fa --output /Path/to/output/S1_vs_S2 [--known dbSNP147.vcf] [--editing RADAR2.txt] [--repeat repeats.txt] [--gene RefSeq.txt] [--minQ 20] [--minDP 5] [--thread 1] [--diff 0.0001] [--merge] [--ReadStranded] [--ReadPaired] [--skipBamCalibration] [--KeepTemp]
 ```
 
-###Required Parameters:
+### Required Parameters:
 
 	-h, --help              Show this help message and exit
 
@@ -73,7 +73,7 @@ python rMATS-DVR.py --sample1 S1_rep_1.bam[,S1_rep_2.bam][,...,S1_rep_n.bam] --s
 	--genome    <str>       Genome sequence in the fasta format
 
 	
-###Optional Parameters:
+### Optional Parameters:
 
 	--known     <str>       Known SNPs in the VCF format
 
@@ -102,7 +102,7 @@ python rMATS-DVR.py --sample1 S1_rep_1.bam[,S1_rep_2.bam][,...,S1_rep_n.bam] --s
 	--KeepTemp              Keep the temporary files. Disable by default.
 	
 
-##Run rMATS-DVR in two steps.
+## Run rMATS-DVR in two steps.
 When there are a large number of replicates, one step mode, which calibrate bam files one by one,  may take long time. In these cases, we recommend users to run bam calibration for all bam files parallelly at the first step. Then the users can run rMATS-DVR.py with --skipBamCalibration.
 
 Bam calibration
@@ -110,7 +110,7 @@ Bam calibration
 python bam_calibration.py --bam sample.bam --output /Path/to/output/prefix --genome hg19.fa [--known dbSNP147.vcf] [--KeepTemp]
 ```	
 
-###Parameters:
+### Parameters:
 
 	-h, --help              Show this help message and exit
 
@@ -130,7 +130,7 @@ python bam_calibration.py --bam sample.bam --output /Path/to/output/prefix --gen
 The final output files are in "Prefix_rMATS-DVR_results" folder, including "rMATS-DVR_Result.txt" and "rMATS-DVR_Result_summary.txt".
 "rMATS-DVR_Result.txt" provides the variant information, read counts, P value, FDR, gene location, and multiple annotations based on the known databases. "rMATS-DVR_Result_summary.txt" summarizes the frequencies of all types of total variants and DVRs respectively, substratified into known SNPs, known RNA editing sites, and novel variants. All other files are temporary files.
 
-###1. rMATS-DVR_Result.txt
+### 1. rMATS-DVR_Result.txt
 	Chroms: Chromosome of variant.
 	Site: 1-based coordinates of variant.
 	Ref_allele: reference allele.
@@ -157,7 +157,7 @@ The final output files are in "Prefix_rMATS-DVR_results" folder, including "rMAT
 	RepeatName: family of repeat element which covers the variant.
 
 
-###2. rMATS-DVR_Result_summary.txt
+### 2. rMATS-DVR_Result_summary.txt
 	Type (Ref-Alt) on sense strand: type of variants in the format of reference allele-alternative allele on the sense strand.
 	All Variants: frequency of each type of all called variants. 
 	All DVRs (FDR<0.05): frequency of each type of all variants with FDR < 0.05.
@@ -166,12 +166,12 @@ The final output files are in "Prefix_rMATS-DVR_results" folder, including "rMAT
 	Novel DVRs: frequency of each type of all novel variants with FDR < 0.05.
 
 
-##Run with the least input 
+## Run with the least input 
 
 For species without SNP or transcript annotation, users can run rMATS-DVR with only the RNA-seq alignments and the corresponding genome. In that case, rMAT-DVR still reports the variant information and the DVR information (column 1-15) in rMATS-DVR_Result.txt. It is also helpful to provide a de novo transcript assembly in the GenePred (extended) format as previously described. 
 
 
-##Contacts
+## Contacts
 
 Yi Xing: yxing@ucla.edu
 
